@@ -24,11 +24,14 @@ PRX_EXPORTS = exports.exp
 USE_KERNEL_LIBC=1
 USE_KERNEL_LIBS=1
 
-LIBDIR = $(ARKROOT)/libs
+LIBDIR = $(ARKSDK)/libs
 LDFLAGS = -nostartfiles
-LIBS = -lpspsystemctrl_kernel -lpspsemaphore
+LIBS = -lpspsystemctrl_kernel -lpspsemaphore_660
 
 PSP_FW_VERSION = 660
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
+
+clean:
+	$(Q)rm -rf *.o *.elf *.prx exports.o exports.c tmctrl.h

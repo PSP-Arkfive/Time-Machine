@@ -46,7 +46,7 @@ void ClearCaches()
 
 int codePagesceIoOpenPatched(const char *file, int flags, SceMode mode)
 {
-    SceModule2 *mod = (SceModule2 *)sceKernelFindModuleByName("vsh_module");
+    SceModule *mod = (SceModule *)sceKernelFindModuleByName("vsh_module");
 
     if (!mod)
         return 0x80010018;
@@ -54,21 +54,21 @@ int codePagesceIoOpenPatched(const char *file, int flags, SceMode mode)
     return sceIoOpen(file, flags, mode);
 }
 
-void OnModuleStart(SceModule2 *mod)
+void OnModuleStart(SceModule *mod)
 {
     char *moduleName = mod->modname;
 
     if (strcmp(moduleName, "sceUtility_Driver") == 0)
     {
         if (psp_model == PSP_GO){
-        	SceModule2 *mod2 = (SceModule2 *)sceKernelFindModuleByName("sceFATFS_Driver");
+        	SceModule *mod2 = (SceModule *)sceKernelFindModuleByName("sceFATFS_Driver");
 
         	MAKE_CALL(mod2->text_addr + 0x3144, df_openPatched);
         	MAKE_CALL(mod2->text_addr + 0x3BEC, df_dopenPatched);
         	MAKE_CALL(mod2->text_addr + 0x4514, df_devctlPatched);
         }
         else {
-        	SceModule2 *mod2 = (SceModule2 *)sceKernelFindModuleByName("sceMSFAT_Driver");
+        	SceModule *mod2 = (SceModule *)sceKernelFindModuleByName("sceMSFAT_Driver");
 
         	MAKE_CALL(mod2->text_addr + 0x30fc, df_openPatched);
         	MAKE_CALL(mod2->text_addr + 0x3ba4, df_dopenPatched);
@@ -102,6 +102,9 @@ void OnModuleStart(SceModule2 *mod)
 
 int module_start(SceSize args, void *argp)
 {
+
+    if (size_rebootbuffer_ms_psp == 0) return -1;
+
     psp_model = sceKernelGetModel();
     InstallFlashEmu();
     previous = sctrlHENSetStartModuleHandler(OnModuleStart);

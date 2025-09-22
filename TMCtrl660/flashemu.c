@@ -69,7 +69,7 @@ static PspIoDrvFuncs lflashFuncs = {
     DummyReturnZero,    	 //IoClose
     DummyReturnZero,    	 //IoRead
     DummyReturnZero,    	 //IoWrite
-    DummyReturnZero,    	 //IoLseek
+    (void*)DummyReturnZero,    	 //IoLseek
     DummyReturnZero,    	 //IoIoctl
     DummyReturnNotSupported, //IoRemove
     DummyReturnNotSupported, //IoMkdir

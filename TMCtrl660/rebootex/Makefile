@@ -1,11 +1,13 @@
 PSPSDK=$(shell psp-config --pspsdk-path)
-INCDIR = $(PSPSDK)/include $(ARKROOT)/common/include $(ARKROOT)/kxploit/ $(ARKROOT)/libs/iplsdk
-TARGET = reboot.bin.gz
-
+ARKSDK = ../../../ark-dev-sdk
+REBOOTEXDIR = ../../../BootLoadEx
 PYTHON=$(shell which python3)
+
+TARGET = reboot.bin.gz
 
 all: $(TARGET)
 
+INCDIR = $(PSPSDK)/include $(ARKSDK)/include $(ARKSDK)/include/iplsdk
 CFLAGS = -std=c99 -Wall -Os -G0 -fno-pic $(addprefix -I, $(INCDIR)) -DREBOOTEX -DMS_IPL -DFAT_DEBUG
 
 CC = psp-gcc
@@ -18,11 +20,10 @@ REBOOT_OBJS = \
 	main.o \
 	lib.o \
 	pspbtcnf.o \
-	
-C_OBJS = \
-	$(ARKROOT)/libs/libsploit/scanner.o \
+	scanner.o \
 
-LIBS = -L $(ARKROOT)/libs -liplsdk
+
+LIBS = -L $(ARKSDK)/libs  -liplsdk
 
 ifdef DEBUG
 CFLAGS += -DDEBUG=$(DEBUG)
@@ -35,7 +36,7 @@ crt0.o : $(REBOOTEXDIR)/crt0.S
 $(REBOOT_OBJS) : %.o : $(REBOOTEXDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-patches.o: $(ARKROOT)/core/compat/psp/rebootex/patches.c
+patches.o: $(REBOOTEXDIR)/psp_rebootex/patches.c
 	$(CC) $(CFLAGS) -I$(REBOOTEXDIR) -c $< -o $@
 
 main.elf: crt0.o $(REBOOT_OBJS) $(C_OBJS) patches.o
@@ -43,12 +44,11 @@ main.elf: crt0.o $(REBOOT_OBJS) $(C_OBJS) patches.o
 $(TARGET): main.elf
 	$(Q)$(STRIP) -s $<
 	$(Q)$(OBJCOPY) -O binary $< $(patsubst %.gz,%,$(TARGET))
-	$(Q)$(PYTHON) $(ARKROOT)/contrib/PC/gz/gz.py $(patsubst %.gz,%,$(TARGET)) $@
+	$(Q)$(PYTHON) $(REBOOTEXDIR)/gz.py $(patsubst %.gz,%,$(TARGET)) $@
 	$(Q)bin2c $@ payload.h rebootbuffer_ms_psp
 	@echo GET $@
 
 clean:
 	$(Q)rm -rf *~ *.s *.o *.elf reboot.bin reboot.bin.gz payload.h $(EXTRA_CLEAN)
 
-include $(ARKROOT)/common/make/global.mak
-include $(ARKROOT)/common/make/beauty_bin.mak
+include $(REBOOTEXDIR)/beauty_bin.mak
