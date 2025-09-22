@@ -54,7 +54,7 @@ int codePagesceIoOpenPatched(const char *file, int flags, SceMode mode)
     return sceIoOpen(file, flags, mode);
 }
 
-void OnModuleStart(SceModule *mod)
+int OnModuleStart(SceModule *mod)
 {
     char *moduleName = mod->modname;
 
@@ -97,7 +97,8 @@ void OnModuleStart(SceModule *mod)
         ClearCaches();
     }
 
-    if (previous) previous(mod);
+    if (previous) return previous(mod);
+    return 0;
 }
 
 int module_start(SceSize args, void *argp)
