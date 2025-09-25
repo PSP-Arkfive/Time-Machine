@@ -12,7 +12,7 @@ all: $(TARGET).prx tmctrl.h
 tmctrl.h: $(TARGET).prx
 	$(Q)bin2c $(TARGET).prx tmctrl.h tmctrl
 
-INCDIR = $(ARKSDK)/include
+INCDIR = $(ARKSDK)/include rebootex
 CFLAGS = -std=c99 -Os -G0 -Wall -fno-pic -fshort-wchar
 
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
