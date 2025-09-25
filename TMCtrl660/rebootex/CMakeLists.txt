@@ -13,6 +13,11 @@ target_include_directories(reboot PRIVATE ${ARKSDK}/include/iplsdk ${BOOTLOADEX}
 target_link_libraries(reboot PRIVATE iplsdk)
 target_link_options(reboot PRIVATE -nostdlib -T${BOOTLOADEX}/linkfile.l)
 
+if(DEBUG)
+    target_compile_definitions(reboot PRIVATE -DDEBUG=${DEBUG})
+    target_link_libraries(reboot PRIVATE colordebugger)
+endif()
+
 add_custom_command(
     TARGET reboot
     POST_BUILD
