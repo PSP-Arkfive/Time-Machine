@@ -1,15 +1,29 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(timemachine VERSION 1.0 LANGUAGES C ASM)
-set(ARKSDK "${CMAKE_CURRENT_SOURCE_DIR}/../ark-dev-sdk" CACHE PATH "Path to Ark5 dev sdk")
-set(BOOTLOADEX "${CMAKE_CURRENT_SOURCE_DIR}/../BootLoadEx" CACHE PATH "Path to Ark5 BootLoadEx")
-set (TMCTRL_MOD_LIBS -nostartfiles -nostdlib pspsystemctrl_kernel pspmodinfo pspsdk pspkernel)
 set(DEBUG "" CACHE STRING "Debug level (1,2,3)")
-
-message(STATUS "ARKSDK = ${ARKSDK}")
-message(STATUS "BOOTLOADEX = ${BOOTLOADEX}")
 message(STATUS "DEBUG LEVEL = ${DEBUG}")
 
+include(FetchContent)
+
+FetchContent_Declare(
+    arkdevsdk
+    GIT_REPOSITORY https://github.com/PSP-Arkfive/ark-dev-sdk.git
+    GIT_TAG main
+)
+
+FetchContent_Declare(
+    bootloadex
+    GIT_REPOSITORY https://github.com/PSP-Arkfive/BootLoadEx.git
+    GIT_TAG main
+)
+
+FetchContent_MakeAvailable(arkdevsdk bootloadex)
+
+set(ARKSDK ${arkdevsdk_SOURCE_DIR})
+set(BOOTLOADEX ${bootloadex_SOURCE_DIR})
+
+set(TMCTRL_MOD_LIBS -nostartfiles -nostdlib pspsystemctrl_kernel pspmodinfo pspsdk pspkernel)
 add_compile_options(-std=c99 -Os -G0 -Wall -fno-pic -fshort-wchar)
 include_directories(${ARKSDK}/include)
 link_directories(${ARKSDK}/libs)

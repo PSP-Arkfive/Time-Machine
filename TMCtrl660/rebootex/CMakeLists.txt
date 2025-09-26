@@ -9,7 +9,7 @@ target_sources(reboot PRIVATE
    ${BOOTLOADEX}/psp_rebootex/patches.c)
 
 target_compile_definitions(reboot PRIVATE REBOOTEX MS_IPL FAT_DEBUG)
-target_include_directories(reboot PRIVATE ${ARKSDK}/include/iplsdk ${BOOTLOADEX})
+target_include_directories(reboot PRIVATE ${BOOTLOADEX})
 target_link_libraries(reboot PRIVATE iplsdk)
 target_link_options(reboot PRIVATE -nostdlib -T${BOOTLOADEX}/linkfile.l)
 
