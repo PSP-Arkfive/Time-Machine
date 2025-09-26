@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.28)
 
 project(timemachine VERSION 1.0 LANGUAGES C ASM)
 set(DEBUG "" CACHE STRING "Debug level (1,2,3)")
@@ -10,12 +10,14 @@ FetchContent_Declare(
     arkdevsdk
     GIT_REPOSITORY https://github.com/PSP-Arkfive/ark-dev-sdk.git
     GIT_TAG main
+    EXCLUDE_FROM_ALL
 )
 
 FetchContent_Declare(
     bootloadex
     GIT_REPOSITORY https://github.com/PSP-Arkfive/BootLoadEx.git
     GIT_TAG main
+    EXCLUDE_FROM_ALL
 )
 
 FetchContent_MakeAvailable(arkdevsdk bootloadex)
