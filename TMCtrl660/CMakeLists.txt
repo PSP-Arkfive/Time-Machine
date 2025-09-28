@@ -10,6 +10,6 @@ target_link_libraries(tmctrl660 PRIVATE ${TMCTRL_MOD_LIBS} pspsemaphore_660)
 target_include_directories(tmctrl660 PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 add_custom_command(OUTPUT payload.h
-  DEPENDS reboot
-  COMMAND bin2c "$<TARGET_FILE:reboot>.bin.gz" payload.h rebootbuffer_ms_psp
+  DEPENDS tmctrl660_reboot
+  COMMAND bin2c "$<TARGET_FILE:tmctrl660_reboot>.bin.gz" payload.h rebootbuffer_ms_psp
 )
