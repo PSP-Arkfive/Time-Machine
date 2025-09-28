@@ -1,5 +1,6 @@
 add_executable(tmctrl660_reboot)
 target_link_libraries(tmctrl660_reboot PRIVATE bootloadex_psp)
+target_compile_definitions(tmctrl660_reboot PRIVATE REBOOTEX MS_IPL FAT_DEBUG)
 
 if(DEBUG)
     target_compile_definitions(tmctrl660_reboot PRIVATE -DDEBUG=${DEBUG})
