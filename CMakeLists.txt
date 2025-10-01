@@ -7,7 +7,7 @@ message(STATUS "DEBUG LEVEL = ${DEBUG}")
 include(FetchContent)
 
 FetchContent_Declare(
-    arkdevsdk
+    ark-dev-sdk
     GIT_REPOSITORY https://github.com/PSP-Arkfive/ark-dev-sdk.git
     GIT_TAG main
     EXCLUDE_FROM_ALL
@@ -20,9 +20,9 @@ FetchContent_Declare(
     EXCLUDE_FROM_ALL
 )
 
-FetchContent_MakeAvailable(arkdevsdk bootloadex)
+FetchContent_MakeAvailable(ark-dev-sdk bootloadex)
 
-set(ARKSDK ${arkdevsdk_SOURCE_DIR})
+set(ARKSDK ${ark-dev-sdk_SOURCE_DIR})
 set(BOOTLOADEX ${bootloadex_SOURCE_DIR})
 
 set(TMCTRL_MOD_LIBS -nostartfiles -nostdlib pspsystemctrl_kernel pspmodinfo pspsdk pspkernel)
